@@ -15,7 +15,7 @@ import {
   InputField,
   InputButton,
   Icon,
-  RepositoriesList
+  RepositoriesList,
 } from './styles';
 
 export function Dashboard() {
@@ -28,10 +28,12 @@ export function Dashboard() {
 
   function handleAddRepository() {
     /**
-     * TODO: 
+     * TODO:
      * - call addRepository function sending inputText value;
      * - clean inputText value.
      */
+    addRepository(inputText);
+    setInputText('');
     inputRef.current?.blur();
   }
 
@@ -39,11 +41,14 @@ export function Dashboard() {
     /**
      * TODO - navigate to the Repository screen sending repository id.
      * Remember to use the correct prop name (repositoryId) to the repositoy id:
-     * 
+     *
      * navigate(SCREEN NAME, {
      *  repositoryId: id of the repository
      * })
      */
+    navigate('Repository', {
+      repositoryId: id,
+    });
   }
 
   return (
@@ -58,24 +63,26 @@ export function Dashboard() {
               placeholder="Digite aqui 'usuário/repositório'"
               value={inputText}
               /**
-               * TODO - update inputText value when input text value 
+               * TODO - update inputText value when input text value
                * changes:
                * onChangeText={YOUR CODE HERE}
                */
+              onChangeText={setInputText}
               onSubmitEditing={handleAddRepository}
               returnKeyType="send"
-              autoCapitalize='none'
+              autoCapitalize="none"
               autoCorrect={false}
             />
 
             <InputButton
               testID="input-button"
               onPress={handleAddRepository}
-            /**
-             * TODO - ensure to disable button when inputText is 
-             * empty (use disabled prop to this):
-             * disabled={CONDITION HERE}
-             */
+              disabled={inputText.trim() === ''}
+              /**
+               * TODO - ensure to disable button when inputText is
+               * empty (use disabled prop to this):
+               * disabled={CONDITION HERE}
+               */
             >
               <Icon name="search" size={20} />
             </InputButton>
@@ -93,7 +100,7 @@ export function Dashboard() {
                 id: repository.id,
                 title: repository.full_name,
                 subTitle: repository.description,
-                imageUrl: repository.owner.avatar_url
+                imageUrl: repository.owner.avatar_url,
               }}
               onPress={() => handleRepositoryPageNavigation(repository.id)}
             />
@@ -101,5 +108,5 @@ export function Dashboard() {
         />
       </Container>
     </Background>
-  )
+  );
 }
